@@ -1,5 +1,12 @@
 # Historial de versiones
 
+## 1.0.3
+
+- Corrección de visibilidad: las tres clasificaciones permanecen fuera del área desplazable de los campos del formulario, tanto al crear como al editar.
+- Prueba instrumentada de interfaz para visibilidad completa, selección de las tres clasificaciones, creación, consulta, edición y eliminación con cancelación y confirmación.
+- Matriz de cumplimiento de requisitos y capturas del emulador integrado en Android Studio.
+- Pruebas ejecutadas mediante ADB sin desinstalar la aplicación. SQLite conserva el esquema versión 1.
+
 ## 1.0.2
 
 - Prueba visual de la aplicación en el emulador de la PC con datos ficticios.

@@ -1,0 +1,9 @@
+
+com.hernandovela.reto8.CompanyDatabaseTest:..
+com.hernandovela.reto8.RequirementsUiTest:.
+
+Time: 1.604
+
+OK (3 tests)
+
+

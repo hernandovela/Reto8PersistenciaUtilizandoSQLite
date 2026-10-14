@@ -23,6 +23,6 @@ El APK se genera en `app/build/outputs/apk/debug/app-debug.apk`. Las pruebas ins
 
 ## Versiones
 
-La entrega `v1.0.2` incluye el [informe de prueba en el emulador](docs/PRUEBA_EMULADOR_v1.0.2.md), las capturas y el [registro de validación automatizada](docs/VALIDACION.md).
+La entrega actual `v1.0.3` incluye la [rectificación de requisitos y prueba de la corrección](docs/REQUISITOS_v1.0.3.md). Se conserva el [informe anterior v1.0.2](docs/PRUEBA_EMULADOR_v1.0.2.md) como evidencia histórica.
 
 Cada entrega utiliza una etiqueta Git `vMAJOR.MINOR.PATCH`, un registro en `CHANGELOG.md` y `versionName`/`versionCode` en `app/build.gradle`. Las correcciones incrementan PATCH, las funcionalidades MINOR y los cambios incompatibles MAJOR. La versión de la base de datos se incrementa solo al cambiar el esquema, con migraciones que preserven los datos.
