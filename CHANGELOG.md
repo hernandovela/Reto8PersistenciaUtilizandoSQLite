@@ -1,5 +1,13 @@
 # Historial de versiones
 
+## 1.2.0
+
+- Logo vectorial original de dos edificios en el encabezado e icono adaptativo de inicio.
+- Paleta azul oscuro y verde, acción principal destacada, tarjetas redondeadas y barra de estado con mejor contraste.
+- Datos de contacto seleccionables para copiar, tecla Buscar para ocultar el teclado y mensajes diferenciados para directorio vacío y búsquedas sin coincidencias.
+- Contador con singular y plural correctos.
+- Compilación, lint y cuatro pruebas instrumentadas aprobadas; diez empresas DEMO conservadas.
+
 ## 1.1.0
 
 - Directorio compacto al abrir la app, con nombre, clasificación y opción Ver detalles para cada empresa.

@@ -19,14 +19,24 @@ public class MainActivity extends Activity {
     private int dp(int n) { return (int)(n*getResources().getDisplayMetrics().density); }
     private LinearLayout column() { LinearLayout l=new LinearLayout(this); l.setOrientation(LinearLayout.VERTICAL); l.setPadding(dp(20),dp(12),dp(20),dp(12)); return l; }
     private TextView text(String value,int size) { TextView t=new TextView(this); t.setText(value); t.setTextSize(size); t.setTextColor(Color.rgb(24,42,62)); t.setPadding(0,dp(6),0,dp(6)); return t; }
-    private Button button(String label,Runnable action) { Button b=new Button(this); b.setText(label); b.setAllCaps(false); b.setOnClickListener(v->action.run()); return b; }
+    private android.graphics.drawable.GradientDrawable rounded(int color) {
+        android.graphics.drawable.GradientDrawable shape=new android.graphics.drawable.GradientDrawable(); shape.setColor(color); shape.setCornerRadius(dp(12)); return shape;
+    }
+    private Button button(String label,Runnable action) { Button b=new Button(this); b.setText(label); b.setAllCaps(false); b.setTextColor(Color.rgb(8,100,90)); b.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.rgb(225,241,238))); b.setOnClickListener(v->action.run()); return b; }
     @Override public void onCreate(Bundle state) {
         super.onCreate(state); db=new CompanyDatabase(this);
         LinearLayout screen=column(); screen.setBackgroundColor(Color.rgb(244,247,251));
         screen.setOnApplyWindowInsetsListener((v,insets)-> { v.setPadding(dp(20),dp(12)+insets.getSystemWindowInsetTop(),dp(20),dp(12)+insets.getSystemWindowInsetBottom()); return insets; });
-        screen.addView(text("Directorio de empresas",26)); screen.addView(text("Software y servicios • SQLite",14));
-        screen.addView(button("+ Nueva empresa",()->edit(null)));
+        LinearLayout heading=new LinearLayout(this);heading.setGravity(Gravity.CENTER_VERTICAL);
+        ImageView logo=new ImageView(this);logo.setImageResource(R.drawable.ic_directory);logo.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        heading.addView(logo,new LinearLayout.LayoutParams(dp(48),dp(48)));
+        LinearLayout titles=new LinearLayout(this);titles.setOrientation(LinearLayout.VERTICAL);titles.setPadding(dp(12),0,0,0);
+        TextView title=text("Directorio de empresas",21);title.setTypeface(null,android.graphics.Typeface.BOLD);titles.addView(title);titles.addView(text("Encuentra tu aliado tecnológico",12));
+        heading.addView(titles,new LinearLayout.LayoutParams(0,-2,1));screen.addView(heading);
+        Button create=button("+ Nueva empresa",()->edit(null));create.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.rgb(18,60,80)));create.setTextColor(Color.WHITE);screen.addView(create);
         search=new EditText(this); search.setSingleLine(true); search.setHint("Buscar en cualquier campo"); screen.addView(search);
+        search.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH);
+        search.setOnEditorActionListener((v,action,event)->{if(action==android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH){((android.view.inputmethod.InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(search.getWindowToken(),0);search.clearFocus();return true;}return false;});
         screen.addView(button("Ver todas las empresas",()->{
             search.setText(""); filter.setSelection(0); search.clearFocus();
             ((android.view.inputmethod.InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(search.getWindowToken(),0);
@@ -43,14 +53,14 @@ public class MainActivity extends Activity {
     private void refresh() {
         rows.removeAllViews(); int selected=filter.getSelectedItemPosition();
         java.util.List<Company> companies=db.list(search.getText().toString().trim(),selected==0?0:1<<(selected-1));
-        count.setText(getString(R.string.company_count,companies.size()));
-        if(companies.isEmpty()) rows.addView(text("No hay empresas para mostrar. Crea una empresa o cambia los filtros.",16));
+        count.setText(getResources().getQuantityString(R.plurals.directory_count,companies.size(),companies.size()));
+        if(companies.isEmpty()) rows.addView(text(search.length()>0||selected!=0?"Sin coincidencias. Prueba otra palabra o pulsa Ver todas las empresas.":"Tu directorio está listo. Pulsa + Nueva empresa para agregar el primer contacto.",16));
         for(Company c:companies) {
-            LinearLayout card=column(); card.setBackgroundColor(Color.WHITE); LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2); params.setMargins(0,0,0,dp(12)); rows.addView(card,params);
+            LinearLayout card=column(); card.setBackground(rounded(Color.WHITE)); card.setElevation(dp(2)); LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2); params.setMargins(dp(2),dp(2),dp(2),dp(12)); rows.addView(card,params);
             card.addView(text(c.name,19)); card.addView(text(c.classification(),14));
             LinearLayout details=new LinearLayout(this); details.setOrientation(LinearLayout.VERTICAL); details.setVisibility(View.GONE);
             Button toggle=button("Ver detalles",()->{}); toggle.setOnClickListener(v->{boolean open=details.getVisibility()==View.GONE;details.setVisibility(open?View.VISIBLE:View.GONE);toggle.setText(open?"Ocultar detalles":"Ver detalles");}); card.addView(toggle);card.addView(details);
-            details.addView(text("Web: "+c.website+"\nTeléfono: "+c.phone+"\nEmail: "+c.email+"\n\nProductos y servicios: "+c.services,16));
+            TextView contact=text("Web: "+c.website+"\nTeléfono: "+c.phone+"\nEmail: "+c.email+"\n\nProductos y servicios: "+c.services,16);contact.setTextIsSelectable(true);details.addView(contact);
             details.addView(button("Editar",()->edit(c))); details.addView(button("Eliminar",()->{
                 activeDelete=new AlertDialog.Builder(this).setTitle("Eliminar empresa").setMessage("¿Quieres eliminar a «"+c.name+"»? Esta acción no se puede deshacer.").setNegativeButton("Cancelar",null).setPositiveButton("Eliminar",(d,w)->{ try { if(!db.delete(c.id)) throw new IllegalStateException(); refresh(); toast("Empresa eliminada"); } catch(Exception e){toast("No se pudo eliminar la empresa");} }).show();
             }));
