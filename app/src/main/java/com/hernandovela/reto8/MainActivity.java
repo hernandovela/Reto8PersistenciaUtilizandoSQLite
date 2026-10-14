@@ -23,6 +23,13 @@ public class MainActivity extends Activity {
         android.graphics.drawable.GradientDrawable shape=new android.graphics.drawable.GradientDrawable(); shape.setColor(color); shape.setCornerRadius(dp(12)); return shape;
     }
     private Button button(String label,Runnable action) { Button b=new Button(this); b.setText(label); b.setAllCaps(false); b.setTextColor(Color.rgb(8,100,90)); b.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.rgb(225,241,238))); b.setOnClickListener(v->action.run()); return b; }
+    private void detailField(LinearLayout parent,String label,String value) {
+        LinearLayout field=new LinearLayout(this);field.setOrientation(LinearLayout.VERTICAL);
+        field.setPadding(dp(12),dp(8),dp(12),dp(10));field.setBackground(rounded(Color.rgb(244,247,251)));
+        LinearLayout.LayoutParams spacing=new LinearLayout.LayoutParams(-1,-2);spacing.setMargins(0,dp(4),0,dp(6));parent.addView(field,spacing);
+        TextView caption=text(label,12);caption.setTextColor(Color.rgb(70,92,108));caption.setTypeface(null,android.graphics.Typeface.BOLD);caption.setPadding(0,0,0,dp(4));field.addView(caption);
+        TextView content=text(value,label.equals("Página web")||label.equals("Correo electrónico")?14:16);content.setPadding(0,0,0,0);content.setTextIsSelectable(true);content.setLineSpacing(dp(3),1);field.addView(content);
+    }
     @Override public void onCreate(Bundle state) {
         super.onCreate(state); db=new CompanyDatabase(this);
         LinearLayout screen=column(); screen.setBackgroundColor(Color.rgb(244,247,251));
@@ -44,7 +51,7 @@ public class MainActivity extends Activity {
         }));
         filter=new Spinner(this); filter.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"Todas las clasificaciones",Company.LABELS[0],Company.LABELS[1],Company.LABELS[2]})); screen.addView(filter);
         count=text("",14); screen.addView(count);
-        ScrollView scroll=new ScrollView(this); directoryScroll=scroll; rows=column(); scroll.addView(rows); screen.addView(scroll,new LinearLayout.LayoutParams(-1,0,1)); setContentView(screen);
+        ScrollView scroll=new ScrollView(this); directoryScroll=scroll; rows=column();rows.setPadding(dp(2),dp(8),dp(2),dp(12)); scroll.addView(rows); screen.addView(scroll,new LinearLayout.LayoutParams(-1,0,1)); setContentView(screen);
         search.addTextChangedListener(new TextWatcher(){ public void beforeTextChanged(CharSequence s,int a,int c,int f){} public void onTextChanged(CharSequence s,int a,int b,int c){refresh();} public void afterTextChanged(Editable e){} });
         filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){ public void onItemSelected(AdapterView<?> p,View v,int pos,long id){refresh();} public void onNothingSelected(AdapterView<?> p){} });
         if(state!=null){ search.setText(state.getString("search","")); filter.setSelection(state.getInt("filter",0)); } refresh();
@@ -55,15 +62,20 @@ public class MainActivity extends Activity {
         java.util.List<Company> companies=db.list(search.getText().toString().trim(),selected==0?0:1<<(selected-1));
         count.setText(getResources().getQuantityString(R.plurals.directory_count,companies.size(),companies.size()));
         if(companies.isEmpty()) rows.addView(text(search.length()>0||selected!=0?"Sin coincidencias. Prueba otra palabra o pulsa Ver todas las empresas.":"Tu directorio está listo. Pulsa + Nueva empresa para agregar el primer contacto.",16));
+        int position=0;
         for(Company c:companies) {
             LinearLayout card=column(); card.setBackground(rounded(Color.WHITE)); card.setElevation(dp(2)); LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2); params.setMargins(dp(2),dp(2),dp(2),dp(12)); rows.addView(card,params);
-            card.addView(text(c.name,19)); card.addView(text(c.classification(),14));
+            LinearLayout heading=new LinearLayout(this);heading.setGravity(Gravity.CENTER_VERTICAL);
+            TextView number=text(String.format(java.util.Locale.getDefault(),"%02d",++position),14);number.setGravity(Gravity.CENTER);number.setTextColor(Color.WHITE);number.setTypeface(null,android.graphics.Typeface.BOLD);number.setBackground(rounded(Color.rgb(18,60,80)));number.setPadding(dp(4),dp(8),dp(4),dp(8));number.setMinWidth(dp(40));number.setContentDescription("Empresa "+position+" de "+companies.size());
+            heading.addView(number,new LinearLayout.LayoutParams(-2,-2));
+            TextView name=text(c.name,19);name.setTypeface(null,android.graphics.Typeface.BOLD);LinearLayout.LayoutParams nameParams=new LinearLayout.LayoutParams(0,-2,1);nameParams.setMargins(dp(12),0,0,0);heading.addView(name,nameParams);card.addView(heading);card.addView(text(c.classification(),14));
             LinearLayout details=new LinearLayout(this); details.setOrientation(LinearLayout.VERTICAL); details.setVisibility(View.GONE);
             Button toggle=button("Ver detalles",()->{}); toggle.setOnClickListener(v->{boolean open=details.getVisibility()==View.GONE;details.setVisibility(open?View.VISIBLE:View.GONE);toggle.setText(open?"Ocultar detalles":"Ver detalles");}); card.addView(toggle);card.addView(details);
-            TextView contact=text("Web: "+c.website+"\nTeléfono: "+c.phone+"\nEmail: "+c.email+"\n\nProductos y servicios: "+c.services,16);contact.setTextIsSelectable(true);details.addView(contact);
-            details.addView(button("Editar",()->edit(c))); details.addView(button("Eliminar",()->{
+            detailField(details,"Página web",c.website);detailField(details,"Teléfono",c.phone);detailField(details,"Correo electrónico",c.email);detailField(details,"Productos y servicios",c.services);
+            LinearLayout actions=new LinearLayout(this);actions.setGravity(Gravity.CENTER_VERTICAL);details.addView(actions);
+            actions.addView(button("Editar",()->edit(c)),new LinearLayout.LayoutParams(0,-2,1)); Button remove=button("Eliminar",()->{
                 activeDelete=new AlertDialog.Builder(this).setTitle("Eliminar empresa").setMessage("¿Quieres eliminar a «"+c.name+"»? Esta acción no se puede deshacer.").setNegativeButton("Cancelar",null).setPositiveButton("Eliminar",(d,w)->{ try { if(!db.delete(c.id)) throw new IllegalStateException(); refresh(); toast("Empresa eliminada"); } catch(Exception e){toast("No se pudo eliminar la empresa");} }).show();
-            }));
+            });remove.setTextColor(Color.rgb(155,38,48));remove.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.rgb(252,234,236)));LinearLayout.LayoutParams removeParams=new LinearLayout.LayoutParams(0,-2,1);removeParams.setMargins(dp(8),0,0,0);actions.addView(remove,removeParams);
         }
     }
     private void toast(String value) { Toast.makeText(this,value,Toast.LENGTH_LONG).show(); }

@@ -1,5 +1,13 @@
 # Historial de versiones
 
+## 1.3.0
+
+- Detalle de empresa organizado en bloques independientes con etiqueta y valor para página web, teléfono, correo y productos/servicios.
+- Mayor ancho útil de las tarjetas y tipografía ajustada para web y correo; datos seleccionables para copiar.
+- Numeración visible 01, 02, 03… según la posición en el listado filtrado; no modifica identificadores SQLite.
+- Acciones Editar y Eliminar en una fila, con color diferenciado para la eliminación.
+- Compilación y lint aprobados, cuatro pruebas instrumentadas aprobadas y revisión visual en el emulador.
+
 ## 1.2.0
 
 - Logo vectorial original de dos edificios en el encabezado e icono adaptativo de inicio.
