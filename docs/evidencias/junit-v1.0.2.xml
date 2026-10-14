@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="2" failures="0" errors="0" skipped="0" time="0.56" timestamp="2026-10-14T00:49:08" hostname="localhost">
+  <testsuite name="com.hernandovela.reto8.CompanyDatabaseTest" tests="2" failures="0" errors="0" skipped="0" time="0.02" timestamp="2026-10-14T00:49:08" hostname="localhost">
+    <properties>
+      <property name="device" value="Small_Phone(AVD) - 17" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="testCrudAndPersistence" classname="com.hernandovela.reto8.CompanyDatabaseTest" time="0.017" />
+    <testcase name="testCombinedAndLiteralFilters" classname="com.hernandovela.reto8.CompanyDatabaseTest" time="0.003" />
+  </testsuite>
+</testsuites>

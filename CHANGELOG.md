@@ -1,5 +1,11 @@
 # Historial de versiones
 
+## 1.0.2
+
+- Prueba visual de la aplicación en el emulador de la PC con datos ficticios.
+- Informe reproducible y capturas de validación, filtros combinados, edición, confirmación de eliminación y persistencia tras reiniciar el proceso.
+- Incremento de versión de entrega; se conserva el esquema de SQLite.
+
 ## 1.0.1
 
 - Corrección del filtro de todas las clasificaciones mediante conversión explícita del parámetro SQLite.

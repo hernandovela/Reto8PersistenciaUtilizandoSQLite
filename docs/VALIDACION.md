@@ -1,5 +1,7 @@
 # Validación de v1.0.1
 
+La entrega v1.0.2 volvió a aprobar compilación, lint y las dos pruebas instrumentadas. El [informe del recorrido visual](PRUEBA_EMULADOR_v1.0.2.md) contiene los resultados ejecutados, las capturas y el XML JUnit de esa entrega.
+
 Verificada con el JDK integrado de Android Studio y el emulador Small_Phone (Android API 37) de la PC.
 
 `gradlew.bat assembleDebug lintDebug connectedDebugAndroidTest`: resultado correcto. Dos pruebas instrumentadas aprobadas: CRUD y persistencia al reabrir SQLite; filtros combinados por nombre y categoría, clasificación múltiple, búsqueda literal de `%` y `_` y parámetros SQL.
