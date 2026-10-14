@@ -6,7 +6,8 @@ Aplicación Android en Java para gestionar un directorio de empresas de desarrol
 
 - Crear, listar, consultar, editar y eliminar empresas.
 - Nombre, URL, teléfono, email, productos y servicios y una o varias clasificaciones: consultoría, desarrollo a la medida y fábrica de software.
-- Filtros combinados por nombre y clasificación.
+- Listado compacto para explorar empresas sin conocer su nombre, con Ver detalles y Ver todas las empresas.
+- Búsqueda en todos los campos, sin distinguir mayúsculas ni tildes, combinada con el filtro de clasificación.
 - Confirmación antes de eliminar y validación de campos obligatorios.
 - Datos persistentes al cerrar y volver a abrir la aplicación.
 
@@ -23,6 +24,6 @@ El APK se genera en `app/build/outputs/apk/debug/app-debug.apk`. Las pruebas ins
 
 ## Versiones
 
-La entrega actual `v1.0.3` incluye la [rectificación de requisitos y prueba de la corrección](docs/REQUISITOS_v1.0.3.md). Se conserva el [informe anterior v1.0.2](docs/PRUEBA_EMULADOR_v1.0.2.md) como evidencia histórica.
+La entrega actual `v1.1.0` incluye [listado y búsqueda global](docs/LISTADO_BUSQUEDA_v1.1.0.md). Se conservan la [rectificación de requisitos v1.0.3](docs/REQUISITOS_v1.0.3.md) y el [informe v1.0.2](docs/PRUEBA_EMULADOR_v1.0.2.md) como evidencia histórica.
 
 Cada entrega utiliza una etiqueta Git `vMAJOR.MINOR.PATCH`, un registro en `CHANGELOG.md` y `versionName`/`versionCode` en `app/build.gradle`. Las correcciones incrementan PATCH, las funcionalidades MINOR y los cambios incompatibles MAJOR. La versión de la base de datos se incrementa solo al cambiar el esquema, con migraciones que preserven los datos.

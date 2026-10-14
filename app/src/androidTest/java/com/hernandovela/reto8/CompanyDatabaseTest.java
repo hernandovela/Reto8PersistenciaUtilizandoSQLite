@@ -35,4 +35,13 @@ public class CompanyDatabaseTest {
         assertEquals(1,db.list("%_",4).size()); assertEquals(0,db.list("software",2).size());
         assertEquals(0,db.list("' OR 1=1 --",0).size());
     }
+    @Test public void testSearchEveryFieldAndAccents() {
+        db.save(new Company(0,"Árbol Digital","https://portal.example.com","5559876543","ventas@equipo.example","Automatización industrial 100%_",5));
+        db.save(new Company(0,"Otra","https://otro.example.com","1112223333","otro@example.com","Aplicaciones",2));
+        for(String query:new String[]{"ARBOL", "portal", "9876543", "ventas@equipo", "automatizacion", "CONSULTORIA", "fabrica", "100%_"})
+            assertEquals(query,1,db.list(query,0).size());
+        assertEquals(1,db.list("ventas",4).size());
+        assertEquals(0,db.list("ventas",2).size());
+        assertEquals(2,db.list("",0).size());
+    }
 }

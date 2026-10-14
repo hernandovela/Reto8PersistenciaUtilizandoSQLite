@@ -15,6 +15,7 @@ public class MainActivity extends Activity {
     private TextView count;
     private AlertDialog activeEditor;
     private AlertDialog activeDelete;
+    private ScrollView directoryScroll;
     private int dp(int n) { return (int)(n*getResources().getDisplayMetrics().density); }
     private LinearLayout column() { LinearLayout l=new LinearLayout(this); l.setOrientation(LinearLayout.VERTICAL); l.setPadding(dp(20),dp(12),dp(20),dp(12)); return l; }
     private TextView text(String value,int size) { TextView t=new TextView(this); t.setText(value); t.setTextSize(size); t.setTextColor(Color.rgb(24,42,62)); t.setPadding(0,dp(6),0,dp(6)); return t; }
@@ -25,10 +26,15 @@ public class MainActivity extends Activity {
         screen.setOnApplyWindowInsetsListener((v,insets)-> { v.setPadding(dp(20),dp(12)+insets.getSystemWindowInsetTop(),dp(20),dp(12)+insets.getSystemWindowInsetBottom()); return insets; });
         screen.addView(text("Directorio de empresas",26)); screen.addView(text("Software y servicios • SQLite",14));
         screen.addView(button("+ Nueva empresa",()->edit(null)));
-        search=new EditText(this); search.setSingleLine(true); search.setHint("Buscar por nombre"); screen.addView(search);
+        search=new EditText(this); search.setSingleLine(true); search.setHint("Buscar en cualquier campo"); screen.addView(search);
+        screen.addView(button("Ver todas las empresas",()->{
+            search.setText(""); filter.setSelection(0); search.clearFocus();
+            ((android.view.inputmethod.InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(search.getWindowToken(),0);
+            refresh(); directoryScroll.smoothScrollTo(0,0);
+        }));
         filter=new Spinner(this); filter.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"Todas las clasificaciones",Company.LABELS[0],Company.LABELS[1],Company.LABELS[2]})); screen.addView(filter);
         count=text("",14); screen.addView(count);
-        ScrollView scroll=new ScrollView(this); rows=column(); scroll.addView(rows); screen.addView(scroll,new LinearLayout.LayoutParams(-1,0,1)); setContentView(screen);
+        ScrollView scroll=new ScrollView(this); directoryScroll=scroll; rows=column(); scroll.addView(rows); screen.addView(scroll,new LinearLayout.LayoutParams(-1,0,1)); setContentView(screen);
         search.addTextChangedListener(new TextWatcher(){ public void beforeTextChanged(CharSequence s,int a,int c,int f){} public void onTextChanged(CharSequence s,int a,int b,int c){refresh();} public void afterTextChanged(Editable e){} });
         filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){ public void onItemSelected(AdapterView<?> p,View v,int pos,long id){refresh();} public void onNothingSelected(AdapterView<?> p){} });
         if(state!=null){ search.setText(state.getString("search","")); filter.setSelection(state.getInt("filter",0)); } refresh();
@@ -41,8 +47,11 @@ public class MainActivity extends Activity {
         if(companies.isEmpty()) rows.addView(text("No hay empresas para mostrar. Crea una empresa o cambia los filtros.",16));
         for(Company c:companies) {
             LinearLayout card=column(); card.setBackgroundColor(Color.WHITE); LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2); params.setMargins(0,0,0,dp(12)); rows.addView(card,params);
-            card.addView(text(c.name,21)); card.addView(text(c.classification(),14)); card.addView(text(c.website+"\n"+c.phone+"\n"+c.email+"\n\n"+c.services,16));
-            card.addView(button("Editar",()->edit(c))); card.addView(button("Eliminar",()->{
+            card.addView(text(c.name,19)); card.addView(text(c.classification(),14));
+            LinearLayout details=new LinearLayout(this); details.setOrientation(LinearLayout.VERTICAL); details.setVisibility(View.GONE);
+            Button toggle=button("Ver detalles",()->{}); toggle.setOnClickListener(v->{boolean open=details.getVisibility()==View.GONE;details.setVisibility(open?View.VISIBLE:View.GONE);toggle.setText(open?"Ocultar detalles":"Ver detalles");}); card.addView(toggle);card.addView(details);
+            details.addView(text("Web: "+c.website+"\nTeléfono: "+c.phone+"\nEmail: "+c.email+"\n\nProductos y servicios: "+c.services,16));
+            details.addView(button("Editar",()->edit(c))); details.addView(button("Eliminar",()->{
                 activeDelete=new AlertDialog.Builder(this).setTitle("Eliminar empresa").setMessage("¿Quieres eliminar a «"+c.name+"»? Esta acción no se puede deshacer.").setNegativeButton("Cancelar",null).setPositiveButton("Eliminar",(d,w)->{ try { if(!db.delete(c.id)) throw new IllegalStateException(); refresh(); toast("Empresa eliminada"); } catch(Exception e){toast("No se pudo eliminar la empresa");} }).show();
             }));
         }

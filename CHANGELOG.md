@@ -1,5 +1,12 @@
 # Historial de versiones
 
+## 1.1.0
+
+- Directorio compacto al abrir la app, con nombre, clasificación y opción Ver detalles para cada empresa.
+- Botón Ver todas las empresas que limpia la búsqueda y la clasificación, oculta el teclado y vuelve al inicio del listado.
+- Búsqueda por nombre, web, teléfono, email, productos y servicios y clasificación, sin distinguir mayúsculas ni tildes.
+- Cuatro pruebas instrumentadas aprobadas; actualización instalada conservando las diez empresas DEMO.
+
 ## 1.0.3
 
 - Corrección de visibilidad: las tres clasificaciones permanecen fuera del área desplazable de los campos del formulario, tanto al crear como al editar.

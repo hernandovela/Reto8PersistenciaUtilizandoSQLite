@@ -45,7 +45,14 @@ public class RequirementsUiTest {
                 for(int i=0;i<5;i++)fields.get(i).setText(values[i]);
                 editor.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
                 assertNotNull(find(activity.getWindow().getDecorView(),original));
-                List<EditText> search=new ArrayList<>(); edits(activity.getWindow().getDecorView(),search); search.get(0).setText(original);
+                List<EditText> search=new ArrayList<>(); edits(activity.getWindow().getDecorView(),search);
+                search.get(0).setText(original+"-inexistente");assertNull(find(activity.getWindow().getDecorView(),original));
+                find(activity.getWindow().getDecorView(),"Ver todas las empresas").performClick();
+                assertEquals("",search.get(0).getText().toString());assertNotNull(find(activity.getWindow().getDecorView(),original));
+                search.get(0).setText(original);
+                assertFalse(find(activity.getWindow().getDecorView(),"Editar").isShown());
+                find(activity.getWindow().getDecorView(),"Ver detalles").performClick();
+                assertTrue(find(activity.getWindow().getDecorView(),"Editar").isShown());
             });
             CompanyDatabase db=new CompanyDatabase(instrumentation.getTargetContext());
             try {
@@ -56,7 +63,7 @@ public class RequirementsUiTest {
             instrumentation.runOnMainSync(()->find(activity.getWindow().getDecorView(),"Editar").performClick());
             final AlertDialog editDialog=dialog(activity);
             instrumentation.runOnMainSync(()->{List<EditText> fields=new ArrayList<>();edits(editDialog.getWindow().getDecorView(),fields);fields.get(0).setText(updated);editDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();assertNotNull(find(activity.getWindow().getDecorView(),updated));});
-            instrumentation.runOnMainSync(()->find(activity.getWindow().getDecorView(),"Eliminar").performClick());
+            instrumentation.runOnMainSync(()->{find(activity.getWindow().getDecorView(),"Ver detalles").performClick();find(activity.getWindow().getDecorView(),"Eliminar").performClick();});
             final AlertDialog cancelled=deletion(activity);
             instrumentation.runOnMainSync(()->{assertNotNull(find(cancelled.getWindow().getDecorView(),"¿Quieres eliminar a «"+updated+"»? Esta acción no se puede deshacer."));cancelled.getButton(AlertDialog.BUTTON_NEGATIVE).performClick();assertNotNull(find(activity.getWindow().getDecorView(),updated));});
             instrumentation.runOnMainSync(()->find(activity.getWindow().getDecorView(),"Eliminar").performClick());

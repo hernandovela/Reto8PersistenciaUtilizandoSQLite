@@ -22,11 +22,20 @@ public class CompanyDatabase extends SQLiteOpenHelper {
     public boolean delete(long id) { return getWritableDatabase().delete("companies","_id=?",new String[]{String.valueOf(id)})==1; }
     public List<Company> list(String name,int category) {
         List<Company> result=new ArrayList<>();
-        String escaped=name.replace("\\","\\\\").replace("%","\\%").replace("_","\\_");
-        try(Cursor c=getReadableDatabase().query("companies",null,"name LIKE ? ESCAPE '\\' AND (CAST(? AS INTEGER) = 0 OR (categories & ?) != 0)",new String[]{"%"+escaped+"%",String.valueOf(category),String.valueOf(category)},null,null,"name COLLATE NOCASE ASC, _id ASC")) {
-            while(c.moveToNext()) result.add(new Company(c.getLong(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4),c.getString(5),c.getInt(6)));
+        String needle=normalize(name.trim());
+        try(Cursor c=getReadableDatabase().query("companies",null,"(CAST(? AS INTEGER) = 0 OR (categories & ?) != 0)",new String[]{String.valueOf(category),String.valueOf(category)},null,null,"name COLLATE NOCASE ASC, _id ASC")) {
+            while(c.moveToNext()) {
+                Company company=new Company(c.getLong(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4),c.getString(5),c.getInt(6));
+                for(String value:new String[]{company.name,company.website,company.phone,company.email,company.services,company.classification()}) {
+                    if(normalize(value).contains(needle)){result.add(company);break;}
+                }
+            }
         }
         return result;
+    }
+    private static String normalize(String value) {
+        return java.text.Normalizer.normalize(value,java.text.Normalizer.Form.NFD)
+            .replaceAll("\\p{M}+", "").toLowerCase(Locale.ROOT);
     }
 }
 
