@@ -1,5 +1,11 @@
 # Historial de versiones
 
+## Documentación v1.3.1-r2 · 2026-10-14
+
+- Sustituye la sección de evidencias antiguas del informe principal por dos capturas nuevas del formulario v1.3.1: validación y campos inferiores, con las tres clasificaciones visibles.
+- Traslada el informe original v1.0.2 a un archivo histórico separado, con enlaces de ida y vuelta.
+- Prueba visual sin guardar datos: se conservan las once empresas. Etiqueta docs-v1.3.1-r2; APK sin cambios.
+
 ## Documentación v1.3.1-r1 · 2026-10-14
 
 - Actualización del enlace histórico PRUEBA_EMULADOR_v1.0.2.md con las mejoras y evidencias hasta la app 1.3.1.
