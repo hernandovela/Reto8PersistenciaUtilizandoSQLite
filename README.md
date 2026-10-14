@@ -24,6 +24,8 @@ El APK se genera en `app/build/outputs/apk/debug/app-debug.apk`. Las pruebas ins
 
 ## Versiones
 
+El [informe de pruebas actualizado a v1.3.1](docs/PRUEBA_EMULADOR_v1.0.2.md) incluye las últimas mejoras, una captura del emulador y tres imágenes de SQLite con los once registros actuales. Se conserva su ruta histórica; la revisión documental lleva la etiqueta `docs-v1.3.1-r1` y no cambia la versión del APK.
+
 La entrega actual `v1.3.1` corrige el [desplazamiento con una barra siempre visible](docs/DESPLAZAMIENTO_v1.3.1.md). Se conservan los informes de [detalle y numeración v1.3.0](docs/DETALLE_v1.3.0.md), [identidad visual v1.2.0](docs/IDENTIDAD_v1.2.0.md), [listado y búsqueda global v1.1.0](docs/LISTADO_BUSQUEDA_v1.1.0.md), [requisitos v1.0.3](docs/REQUISITOS_v1.0.3.md) y [pruebas v1.0.2](docs/PRUEBA_EMULADOR_v1.0.2.md).
 
 Cada entrega utiliza una etiqueta Git `vMAJOR.MINOR.PATCH`, un registro en `CHANGELOG.md` y `versionName`/`versionCode` en `app/build.gradle`. Las correcciones incrementan PATCH, las funcionalidades MINOR y los cambios incompatibles MAJOR. La versión de la base de datos se incrementa solo al cambiar el esquema, con migraciones que preserven los datos.

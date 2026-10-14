@@ -1,0 +1,13 @@
+{
+  "fecha_local": "2026-10-14",
+  "origen": "emulator-5554 / com.hernandovela.reto8 / databases/companies.db",
+  "sha256_copia_sqlite": "bfedec550d6fe5bf4e5a806dc3e1ef9c7704538d2a5805b07427fc2fd5451dca",
+  "integrity_check": "ok",
+  "registros": 11,
+  "clasificaciones": {
+    "Consultoría": 5,
+    "Desarrollo a la medida": 7,
+    "Fábrica de software": 6
+  },
+  "esquema_version": 1
+}

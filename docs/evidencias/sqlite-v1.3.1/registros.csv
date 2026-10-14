@@ -1,0 +1,12 @@
+_id,name,website,phone,email,services,categories
+18,Capgemini,https://www.capgemini.com,300123456789,prueba@capgemini.com,TIC,7
+5,DEMO Apps a tu Medida,https://apps.example.com,3000000889,pruebas@apps.example.com,Aplicaciones Android y soluciones web personalizadas,2
+3,DEMO Asesores Digitales,https://asesores.example.com,3000000001,pruebas@asesores.example.com,Diagnóstico tecnológico y estrategia digital,2
+4,DEMO Consultoría Ágil,https://agil.example.com,3000000002,pruebas@agil.example.com,Consultoría de procesos y acompañamiento ágil,1
+11,DEMO Desarrollo y Producción,https://produccion.example.com,3000000009,pruebas@produccion.example.com,Desarrollo a la medida y producción de software,6
+9,DEMO Estrategia y Desarrollo,https://estrategia.example.com,3000000007,pruebas@estrategia.example.com,Consultoría tecnológica y desarrollo de sistemas personalizados,3
+7,DEMO Fábrica de Código,https://fabrica.example.com,3000000005,pruebas@fabrica.example.com,Producción de software y mantenimiento de aplicaciones,4
+10,DEMO Ingeniería Integral,https://ingenieria.example.com,3000000008,pruebas@ingenieria.example.com,Consultoría de arquitectura y fábrica de software,5
+8,DEMO Software Industrial,https://industrial.example.com,3000000006,pruebas@industrial.example.com,Desarrollo de componentes y pruebas de calidad,4
+6,DEMO Soluciones Empresariales,https://soluciones.example.com,3000000004,pruebas@soluciones.example.com,Sistemas de inventario y gestión empresarial a la medida,2
+12,DEMO Tecnología 360,https://tecnologia360.example.com,3000000010,pruebas@tecnologia360.example.com,"Consultoría, soluciones a la medida y fábrica de software",7

@@ -1,5 +1,12 @@
 # Historial de versiones
 
+## Documentación v1.3.1-r1 · 2026-10-14
+
+- Actualización del enlace histórico PRUEBA_EMULADOR_v1.0.2.md con las mejoras y evidencias hasta la app 1.3.1.
+- Captura actual del emulador y tres imágenes de consultas SQLite con los once registros actuales; CSV, SQL y verificación de integridad adjuntos.
+- Se conserva el informe original y se distingue la barra del teclado de la barra de desplazamiento de la app.
+- Revisión identificada por la etiqueta Git docs-v1.3.1-r1; sin cambios del APK, versionCode ni esquema SQLite.
+
 ## 1.3.1
 
 - Barra lateral persistente con carril visible e indicador arrastrable, sincronizado con la altura real del listado.
