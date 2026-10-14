@@ -51,13 +51,17 @@ public class MainActivity extends Activity {
         }));
         filter=new Spinner(this); filter.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"Todas las clasificaciones",Company.LABELS[0],Company.LABELS[1],Company.LABELS[2]})); screen.addView(filter);
         count=text("",14); screen.addView(count);
-        ScrollView scroll=new ScrollView(this); directoryScroll=scroll; rows=column();rows.setPadding(dp(2),dp(8),dp(2),dp(12)); scroll.addView(rows); screen.addView(scroll,new LinearLayout.LayoutParams(-1,0,1)); setContentView(screen);
+        ScrollView scroll=new ScrollView(this); directoryScroll=scroll; scroll.setVerticalScrollBarEnabled(false);rows=column();rows.setPadding(dp(2),dp(8),dp(2),dp(12)); scroll.addView(rows);
+        LinearLayout listArea=new LinearLayout(this);listArea.addView(scroll,new LinearLayout.LayoutParams(0,-1,1));
+        listArea.addView(new DirectoryScrollBar(this,scroll),new LinearLayout.LayoutParams(dp(40),-1));
+        screen.addView(listArea,new LinearLayout.LayoutParams(-1,0,1)); setContentView(screen);
         search.addTextChangedListener(new TextWatcher(){ public void beforeTextChanged(CharSequence s,int a,int c,int f){} public void onTextChanged(CharSequence s,int a,int b,int c){refresh();} public void afterTextChanged(Editable e){} });
         filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){ public void onItemSelected(AdapterView<?> p,View v,int pos,long id){refresh();} public void onNothingSelected(AdapterView<?> p){} });
         if(state!=null){ search.setText(state.getString("search","")); filter.setSelection(state.getInt("filter",0)); } refresh();
     }
     @Override public void onSaveInstanceState(Bundle state) { super.onSaveInstanceState(state); state.putString("search",search.getText().toString()); state.putInt("filter",filter.getSelectedItemPosition()); }
     private void refresh() {
+        directoryScroll.fling(0);directoryScroll.scrollTo(0,0);
         rows.removeAllViews(); int selected=filter.getSelectedItemPosition();
         java.util.List<Company> companies=db.list(search.getText().toString().trim(),selected==0?0:1<<(selected-1));
         count.setText(getResources().getQuantityString(R.plurals.directory_count,companies.size(),companies.size()));

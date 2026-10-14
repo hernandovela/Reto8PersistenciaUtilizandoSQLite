@@ -1,5 +1,13 @@
 # Historial de versiones
 
+## 1.3.1
+
+- Barra lateral persistente con carril visible e indicador arrastrable, sincronizado con la altura real del listado.
+- Navegación pulsando el carril, arrastrando el indicador o usando teclado y acciones de accesibilidad.
+- Recalcula el recorrido al expandir detalles o cambiar el tamaño del contenido; permanece visible en gris si no hay desplazamiento disponible.
+- Las búsquedas y cambios de clasificación vuelven al inicio de los resultados.
+- Cinco pruebas instrumentadas aprobadas, incluida navegación en ambos sentidos y reducción del contenido.
+
 ## 1.3.0
 
 - Detalle de empresa organizado en bloques independientes con etiqueta y valor para página web, teléfono, correo y productos/servicios.

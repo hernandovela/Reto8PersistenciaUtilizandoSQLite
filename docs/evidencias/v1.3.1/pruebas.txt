@@ -1,0 +1,10 @@
+
+com.hernandovela.reto8.CompanyDatabaseTest:...
+com.hernandovela.reto8.DirectoryScrollBarTest:.
+com.hernandovela.reto8.RequirementsUiTest:.
+
+Time: 3.01
+
+OK (5 tests)
+
+
