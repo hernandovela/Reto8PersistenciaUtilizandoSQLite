@@ -5,7 +5,8 @@ import android.database.sqlite.*;
 import java.util.*;
 
 public class CompanyDatabase extends SQLiteOpenHelper {
-    public CompanyDatabase(Context context) { super(context,"companies.db",null,1); }
+    public CompanyDatabase(Context context) { this(context,"companies.db"); }
+    CompanyDatabase(Context context,String name) { super(context,name,null,1); }
     @Override public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE companies (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, website TEXT NOT NULL, phone TEXT NOT NULL, email TEXT NOT NULL, services TEXT NOT NULL, categories INTEGER NOT NULL CHECK(categories BETWEEN 1 AND 7))");
     }
@@ -22,9 +23,10 @@ public class CompanyDatabase extends SQLiteOpenHelper {
     public List<Company> list(String name,int category) {
         List<Company> result=new ArrayList<>();
         String escaped=name.replace("\\","\\\\").replace("%","\\%").replace("_","\\_");
-        try(Cursor c=getReadableDatabase().query("companies",null,"name LIKE ? ESCAPE '\\' AND (? = 0 OR (categories & ?) != 0)",new String[]{"%"+escaped+"%",String.valueOf(category),String.valueOf(category)},null,null,"name COLLATE NOCASE ASC, _id ASC")) {
+        try(Cursor c=getReadableDatabase().query("companies",null,"name LIKE ? ESCAPE '\\' AND (CAST(? AS INTEGER) = 0 OR (categories & ?) != 0)",new String[]{"%"+escaped+"%",String.valueOf(category),String.valueOf(category)},null,null,"name COLLATE NOCASE ASC, _id ASC")) {
             while(c.moveToNext()) result.add(new Company(c.getLong(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4),c.getString(5),c.getInt(6)));
         }
         return result;
     }
 }
+

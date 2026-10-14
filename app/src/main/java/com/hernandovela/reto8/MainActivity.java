@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
     private void refresh() {
         rows.removeAllViews(); int selected=filter.getSelectedItemPosition();
         java.util.List<Company> companies=db.list(search.getText().toString().trim(),selected==0?0:1<<(selected-1));
-        count.setText(companies.size()+" empresa(s)");
+        count.setText(getString(R.string.company_count,companies.size()));
         if(companies.isEmpty()) rows.addView(text("No hay empresas para mostrar. Crea una empresa o cambia los filtros.",16));
         for(Company c:companies) {
             LinearLayout card=column(); card.setBackgroundColor(Color.WHITE); LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2); params.setMargins(0,0,0,dp(12)); rows.addView(card,params);
